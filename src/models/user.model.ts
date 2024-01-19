@@ -1,4 +1,4 @@
-import { number, z } from "zod";
+import { z } from "zod";
 import { currentDateFormated } from "../utils/currentDate";
 
 const RoleEnum = z.enum(["user", "admin"], {
@@ -21,12 +21,14 @@ export const UserSchemaRegister = z.object({
     })
     .min(8, "Password debe tener almenos 8 caracteres"),
   email: z
-    .string()
+    .string({
+      required_error: "Email es requerido. Debe ser user@mail.something",
+      invalid_type_error: "Email debe ser un string",
+    })
     .refine((value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), {
       message:
         "El formato del email no es válido. Debe ser user@mail.something",
-    })
-    .nullable(),
+    }),
   firstName: z.string({
     required_error: "First name es requerido",
     invalid_type_error: "First name debe ser un string",
@@ -37,12 +39,18 @@ export const UserSchemaRegister = z.object({
   }),
   role: RoleEnum.optional().default("user"),
 });
-
+function isValidISODate(value: string): boolean {
+  // Intenta crear una nueva fecha a partir de la cadena proporcionada
+  const date = new Date(value);
+  
+  // Valida si la fecha es válida y si la cadena coincide con el formato ISO8601
+  return !isNaN(date.getTime()) && date.toISOString() === value;
+}
 export const UserSchema = UserSchemaRegister.extend({
-  createdAt: z.string().refine((value) => /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value), {
+  createdAt: z.string().refine((value) => isValidISODate(value), {
     message: 'El formato de la fecha no es válido. Utiliza el formato ISO8601.',
   }).default(currentDateFormated),
-  updatedAt: z.string().refine((value) => /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value), {
+  updatedAt: z.string().refine((value) => isValidISODate(value), {
     message: 'El formato de la fecha no es válido. Utiliza el formato ISO8601.',
   }).default(currentDateFormated),
 })
@@ -57,6 +65,7 @@ type withId = {
   id: number;
 }
 export type UserRegister = z.infer<typeof UserSchemaRegister>
+export type UserData = z.infer<typeof UserSchema>
 export type User = z.infer<typeof UserSchema> & withId
 export type UserLogin = z.infer<typeof UserSchemaLogin>
 
