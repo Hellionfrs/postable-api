@@ -1,6 +1,7 @@
 import express from "express";
 import { authRouter } from "./routers/auth.router";
 import errorHandler from "./middlewares/error.middleware";
+import 'dotenv/config' 
 
 const app = express();
 const port = 5500;

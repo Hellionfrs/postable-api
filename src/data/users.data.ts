@@ -2,15 +2,48 @@ import { query } from "../db";
 import { User, UserData } from "../models/user.model";
 import ExpressReviewsError from "../utils/postableError.utils";
 
-export async function getUserByName(
-  username: string
-): Promise<User> {
+export async function getUserByName(username: string): Promise<User> {
   try {
     return (await query("SELECT * FROM users WHERE username = $1;", [username]))
       .rows[0];
   } catch (error) {
     throw new ExpressReviewsError(
       "usuario no existe",
+      403,
+      "data error",
+      error
+    );
+  }
+}
+
+export async function getUserById(userId: number): Promise<User> {
+  try {
+    return (await query("SELECT * FROM users WHERE id = $1;", [userId]))
+      .rows[0];
+  } catch (error) {
+    throw new ExpressReviewsError(
+      "usuario no existe",
+      403,
+      "data error",
+      error
+    );
+  }
+}
+
+export async function getUserByNameAndEmail(
+  username: string,
+  email: string
+): Promise<User> {
+  try {
+    return (
+      await query("SELECT * FROM users WHERE username = $1 AND email = $2;", [
+        username,
+        email,
+      ])
+    ).rows[0];
+  } catch (error) {
+    throw new ExpressReviewsError(
+      "Password no coincide con Username",
       403,
       "data error",
       error
