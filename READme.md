@@ -24,7 +24,15 @@ PGUSER=pg_user
 PGPASSWORD=pg_password
 PGADMINDATABASE=admin_database
 ```
-
-1. npm run db:migrate create -- --name create-users.ts "crea archivos para migrar"
-- npm run db:create "crea la base de datos"
-- npm run db:migrate up "para ejecutar las migraciones"
+4.  Crea la base de datos que usaremos!
+```ruby 
+npm run db:create  
+```
+5. Crea las tablas!
+```ruby
+npm run db:migrate up
+```
+6. Si quieres seguir agregar migraciones para que todos nos pongamos al dia 
+```ruby
+npm run db:migrate create -- --name create-users.ts 
+```
