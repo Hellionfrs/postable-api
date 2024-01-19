@@ -16,7 +16,6 @@ Ubicado en la raiz del proyecto ejecuta el siguiente codigo en la terminal `npm 
 1. Antes de comenzar con las migraciones es necesario que tengas Postgresql y un usuario con permisos especiales
 1. Crea una db con el usuario con permisos que nos servira de admin
 1. Crea un archivo .env en la raiz del proyecto y completa segun tu usario de Postgresql, recuerda que el PGDATABASE y PGADMINDATABASE deben ser distintos
-    - tu archivo .env tiene que verse asi:
 ```ruby
 PGHOST=localhost
 PGDATABASE=database
