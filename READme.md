@@ -6,11 +6,17 @@ El proyecto se centra en la creación de una API RESTful diseñada para una red 
 
 #### Clonar el Repositorio
 
-Ejecuta en tu terminal `git clone git@github.com:codeableorg/postable-api-Hellionfrs.git`
+Ejecuta en tu terminal:
+```ruby 
+git clone git@github.com:codeableorg/postable-api-Hellionfrs.git
+```
 
 #### Instalar Dependencias
 
-Ubicado en la raiz del proyecto ejecuta el siguiente codigo en la terminal `npm install`
+Ubicado en la raiz del proyecto ejecuta el siguiente codigo en la terminal:
+```ruby
+npm install
+```
 
 ### Migraciones
 1. Antes de comenzar con las migraciones es necesario que tengas Postgresql y un usuario con permisos especiales
