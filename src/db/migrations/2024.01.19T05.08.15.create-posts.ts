@@ -5,8 +5,8 @@ export const up: Migration = async (params) => {
     id SERIAL PRIMARY KEY,
     userId INTEGER REFERENCES users(id) NOT NULL,
     content TEXT NOT NULL,
-    createdAt TIMESTAMPTZ DEFAULT current_timestamp,
-    updatedAt TIMESTAMPTZ DEFAULT current_timestamp
+    createdAt VARCHAR(22) NOT NULL,
+    updatedAt VARCHAR(22) NOT NULL
 );`);
 };
 export const down: Migration = async (params) => {

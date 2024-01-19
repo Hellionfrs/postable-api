@@ -5,7 +5,7 @@ export const up: Migration = async (params) => {
     id SERIAL PRIMARY KEY,
     postId INTEGER REFERENCES posts(id) NOT NULL,
     userId INTEGER REFERENCES users(id) NOT NULL,
-    createdAt TIMESTAMPTZ DEFAULT current_timestamp,
+    createdAt VARCHAR(22) NOT NULL,
     likesCount INTEGER NOT NULL DEFAULT 0,
     UNIQUE (postId, userId) -- Restricción de unicidad para evitar likes duplicados
 );`);
