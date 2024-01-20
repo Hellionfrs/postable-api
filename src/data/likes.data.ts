@@ -38,3 +38,20 @@ export async function createLike(userId: number, postId: number) {
     );
   }
 }
+
+export async function deleteLike(userId: number, postId: number) {
+  try {
+    return await query(
+      "DELETE FROM likes WHERE userid = $1 AND postid = $2 RETURNING *",
+      [userId, postId,]
+    );
+  } catch (error) {
+    throw new ExpressReviewsError(
+      "Error al crear nuevo like",
+      500,
+      "DataError",
+      error,
+      "createLike"
+    );
+  }
+}

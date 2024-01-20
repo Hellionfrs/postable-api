@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { createPost, editPost, editPostLikes } from '../services/posts.service';
 import { PostContent, PostSchemaContent, PostSchemaContentEdit, PostSchemaWithDates, PostWithDatesAndUserId } from "../models/posts.model";
-import { createLike } from "../services/likes.service";
+import { createLike, deleteLike } from "../services/likes.service";
 import { getPostById } from "../data/posts.data";
 
 export const createPostsController = async (
@@ -71,6 +71,33 @@ export const createPostLikeController = async (
     res.status(201).json({
       ok:true,
       message: "Post likeado exitosamente",
+      data: {...postLiked, username, likescount }
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const  deletePostLikeController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // tenemos el userId, username del login
+    const userId = Number(req.userId)
+    const username = req.username
+    // tenemos postId del req.params["postId"]
+    const postId = Number(req.params["postId"])
+    const post = await getPostById(postId)
+    // crear like en likes y actualizar el posts.likescount
+    await deleteLike(userId, postId) // edita la tabla likes 
+    post.likescount -= 1
+    console.log(userId, postId, post.likescount)
+    const {userid, likescount, ...postLiked} = await editPostLikes(postId, userId, post.likescount)
+    res.status(201).json({
+      ok:true,
+      message: "Like eliminado exitosamente",
       data: {...postLiked, username, likescount }
     })
   } catch (error) {

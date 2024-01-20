@@ -27,3 +27,21 @@ export async function createLike(userId: number, postId: number) {
   }
 } 
 
+export async function deleteLike(userId: number, postId: number) {
+  try {
+    const likeExist = await likesDB.getLikeByUserAndPost(userId, postId)
+    if (!likeExist) {
+      throw new ExpressReviewsError(
+        "El like que quieres eliminar no existe",
+        500,
+        "ServiceError",
+        Error
+      );
+
+    }
+    return await likesDB.deleteLike(userId, postId)
+  } catch (error) {
+    throw error
+  }
+} 
+
