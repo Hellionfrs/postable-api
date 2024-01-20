@@ -59,11 +59,11 @@ export async function createUser(data: UserData): Promise<User> {
         data.username,
         data.password,
         data.email,
-        data.firstName,
-        data.lastName,
+        data.firstname,
+        data.lastname,
         data.role,
-        data.createdAt,
-        data.updatedAt,
+        data.createdat,
+        data.updatedat,
       ]
     );
     return createdUser.rows[0];

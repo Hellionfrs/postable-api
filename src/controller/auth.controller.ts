@@ -17,19 +17,12 @@ export const signUpController = async (
   try {
     const dataParsed = UserSchema.parse(UserSchemaRegister.parse(req.body));
     dataParsed.password = await bcrypt.hash(dataParsed.password, costFactor);
-    const newUser = await createUser(dataParsed);
+    const {role, password, ...newUser} = await createUser(dataParsed);
 
     res.status(201).json({
       ok: true,
       message: "Register exitoso",
-      data: {
-        username: newUser.username,
-        email: newUser.email,
-        firstName: dataParsed.firstName,
-        lastName: dataParsed.lastName,
-        createdAt: dataParsed.createdAt,
-        updatedAt: dataParsed.updatedAt,
-      },
+      data: newUser,
     });
   } catch (error) {
     next(error);

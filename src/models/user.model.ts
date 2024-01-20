@@ -29,11 +29,11 @@ export const UserSchemaRegister = z.object({
       message:
         "El formato del email no es válido. Debe ser user@mail.something",
     }),
-  firstName: z.string({
+  firstname: z.string({
     required_error: "First name es requerido",
     invalid_type_error: "First name debe ser un string",
   }),
-  lastName: z.string({
+  lastname: z.string({
     required_error: "Last name es requerido",
     invalid_type_error: "Last name debe ser un string",
   }),
@@ -47,10 +47,10 @@ function isValidISODate(value: string): boolean {
   return !isNaN(date.getTime()) && date.toISOString() === value;
 }
 export const UserSchema = UserSchemaRegister.extend({
-  createdAt: z.string().refine((value) => isValidISODate(value), {
+  createdat: z.string().refine((value) => isValidISODate(value), {
     message: 'El formato de la fecha no es válido. Utiliza el formato ISO8601.',
   }).default(currentDateFormated),
-  updatedAt: z.string().refine((value) => isValidISODate(value), {
+  updatedat: z.string().refine((value) => isValidISODate(value), {
     message: 'El formato de la fecha no es válido. Utiliza el formato ISO8601.',
   }).default(currentDateFormated),
 })
