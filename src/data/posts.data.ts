@@ -77,3 +77,21 @@ export async function editPost(
     );
   }
 }
+
+export async function editPostLikes(postId: number, userId: number, newCantLikes: number) {
+  try {
+    const updatedAt = currentDateFormated()
+    return (await query(
+      `UPDATE posts SET likescount = $1, updatedat = $4 WHERE id = $2 AND userid = $3 RETURNING *;`,
+      [newCantLikes, postId, userId, updatedAt]
+    )).rows[0];
+  } catch (error) {
+    throw new ExpressReviewsError(
+      "Error al editar post likes",
+      500,
+      "DataError",
+      error,
+      "editPostLikes"
+    );
+  }
+}

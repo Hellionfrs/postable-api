@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { createPost, editPost } from '../services/posts.service';
+import { createPost, editPost, editPostLikes } from '../services/posts.service';
 import { PostContent, PostSchemaContent, PostSchemaContentEdit, PostSchemaWithDates, PostWithDatesAndUserId } from "../models/posts.model";
+import { createLike } from "../services/likes.service";
+import { getPostById } from "../data/posts.data";
 
 export const createPostsController = async (
   req: Request,
@@ -48,3 +50,30 @@ export const editPostsController = async (
     next(error)
   }
 };
+
+export const createPostLikeController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // tenemos el userId, username del login
+    const userId = Number(req.userId)
+    const username = req.username
+    // tenemos postId del req.params["postId"]
+    const postId = Number(req.params["postId"])
+    const post = await getPostById(postId)
+    post.likescount += 1
+    // crear like en likes y actualizar el posts.likescount
+    await createLike(userId, postId) // edita la tabla likes 
+    console.log(userId, postId, post.likescount)
+    const {userid, likescount, ...postLiked} = await editPostLikes(postId, userId, post.likescount)
+    res.status(201).json({
+      ok:true,
+      message: "Post likeado exitosamente",
+      data: {...postLiked, username, likescount }
+    })
+  } catch (error) {
+    next(error)
+  }
+}

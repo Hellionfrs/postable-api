@@ -46,3 +46,24 @@ export async function editPost(
     throw error
   }
 }
+
+export async function editPostLikes(
+  postId: number,
+  userId: number,
+  newCantLikes: number,
+): Promise<Post> {
+  try {
+    const post = await postsDB.getPostById(postId);
+    if (!post) {
+      throw new ExpressReviewsError(
+        "El post no existe",
+        400,
+        "ServiceError",
+        Error
+      );
+    }
+    return await postsDB.editPostLikes(postId, userId, newCantLikes);
+  } catch (error) {
+    throw error
+  }
+}
