@@ -61,12 +61,24 @@ export const UserSchemaLogin = UserSchemaRegister.pick({
   email: true,
 })
 
+export const UserSchemaEdit = UserSchemaRegister.pick({
+  email: true,
+  firstname: true,
+  lastname: true,
+}).partial().refine((data) => {
+  // Verificar que al menos un campo esté presente en el objeto
+  return Object.keys(data).length > 0;
+}, {
+  message: 'Intenta con email, firstname o lastname',
+})
+
 type withId = {
   id: number;
 }
 export type UserRegister = z.infer<typeof UserSchemaRegister>
 export type UserData = z.infer<typeof UserSchema>
 export type User = z.infer<typeof UserSchema> & withId
+export type UserEdit = z.infer<typeof UserSchemaEdit>
 export type UserLogin = z.infer<typeof UserSchemaLogin>
 
 // const newuser: User = {

@@ -38,6 +38,6 @@ export const authenticateHandler = async (
     req.userRole = payload.userRole;
     next();
   } catch (error) {
-    next(new ExpressReviewsError("no autenticado", 403, "autenticacion error", error));
+    next(new ExpressReviewsError("no autenticado", 401, "autenticacion error", error));
   }
 };

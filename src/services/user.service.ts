@@ -1,5 +1,5 @@
 import * as userDB from "../data/users.data";
-import { User, UserData } from "../models/user.model";
+import { User, UserData, UserEdit } from "../models/user.model";
 import ExpressReviewsError from "../utils/postableError.utils";
 
 export async function createUser(data:UserData):Promise<User> {
@@ -46,6 +46,19 @@ export async function getUserById(userId: number):Promise<User> {
       throw new ExpressReviewsError("usuario no existe", 403, "service error")
     } 
     return user
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function updateUser(userId: number, data:Partial<UserEdit>):Promise<User> {
+  try {
+    const user = await userDB.getUserById(userId)
+    if (!user) {
+      throw new ExpressReviewsError("usuario no existe", 403, "service error");
+    }
+    const updatedUser = await userDB.updateUser(userId, data)
+    return updatedUser
   } catch (error) {
     throw error
   }

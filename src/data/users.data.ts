@@ -1,6 +1,7 @@
 import { query } from "../db";
-import { User, UserData } from "../models/user.model";
+import { User, UserData, UserEdit } from "../models/user.model";
 import ExpressReviewsError from "../utils/postableError.utils";
+import { objStringify } from "../utils/stringifyObject.utils";
 
 export async function getUserByName(username: string): Promise<User> {
   try {
@@ -70,6 +71,20 @@ export async function createUser(data: UserData): Promise<User> {
   } catch (error) {
     throw new ExpressReviewsError(
       "No se pudo crear usuario",
+      403,
+      "data error",
+      error
+    );
+  }
+}
+
+export async function updateUser(userId: number, data:Partial<UserEdit>):Promise<User> {
+  try {
+    const dataStringify = objStringify(data)
+    return (await query(`UPDATE users SET ${dataStringify} WHERE id = $1 RETURNING *;`, [userId])).rows[0]
+  } catch (error) {
+    throw new ExpressReviewsError(
+      "No se pudo editar usuario",
       403,
       "data error",
       error
