@@ -10,6 +10,14 @@ export const PostSchemaContent = z.object({
   })
 })
 
+export const PostSchemaContentEdit = PostSchemaContent.pick({
+  content: true,
+}).partial().refine((data) => {
+  // Verificar que al menos un campo esté presente en el objeto
+  return Object.keys(data).length > 0;
+}, {
+  message: 'Intenta con content',
+})
 // Para autocompletar el createdat y updateat
 export const PostSchemaWithDates = PostSchemaContent.extend({
   createdat: z.string().refine((value) => isValidISODate(value), {

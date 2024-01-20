@@ -41,7 +41,7 @@ export const loginController = async (
     const validPass = await bcrypt.compare(password, user.password);
 
     if (validPass) {
-      const payload = { userId: user.id, userRole: user.role};
+      const payload = { userId: user.id, username: user.username, userRole: user.role};
       const token = jwt.sign(payload, jwtSecret, {expiresIn: "10h"})
       res.json({ok: true, message: "Login exitoso", data: {token}})
     } else {

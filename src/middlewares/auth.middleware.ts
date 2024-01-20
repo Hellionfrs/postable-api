@@ -7,6 +7,7 @@ declare global {
   namespace Express {
     interface Request {
       userId?: number;
+      username?: string;
       userRole?: string;
     }
   }
@@ -30,11 +31,13 @@ export const authenticateHandler = async (
   try {
     const payload = jwt.verify(token, jwtSecret) as {
       userId: number;
+      username: string;
       userRole: string;
       iat: number;
       exp: number;
     };
     req.userId = payload.userId;
+    req.username = payload.username;
     req.userRole = payload.userRole;
     next();
   } catch (error) {
