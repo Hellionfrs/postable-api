@@ -63,3 +63,16 @@ export async function updateUser(userId: number, data:Partial<UserEdit>):Promise
     throw error
   }
 }
+
+export async function deleteUser(userId: number):Promise<User> {
+  try {
+    const user = await userDB.getUserById(userId)
+    if (!user) {
+      throw new ExpressReviewsError("usuario no existe", 403, "service error");
+    }
+    const deletedUser = await userDB.deleteUser(userId)
+    return deletedUser
+  } catch (error) {
+    throw error
+  }
+}

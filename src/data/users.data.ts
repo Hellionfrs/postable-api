@@ -1,5 +1,6 @@
 import { query } from "../db";
 import { User, UserData, UserEdit } from "../models/user.model";
+import { currentDateFormated } from "../utils/currentDate";
 import ExpressReviewsError from "../utils/postableError.utils";
 import { objStringify } from "../utils/stringifyObject.utils";
 
@@ -78,13 +79,37 @@ export async function createUser(data: UserData): Promise<User> {
   }
 }
 
-export async function updateUser(userId: number, data:Partial<UserEdit>):Promise<User> {
+export async function updateUser(
+  userId: number,
+  data: Partial<UserEdit>
+): Promise<User> {
   try {
-    const dataStringify = objStringify(data)
-    return (await query(`UPDATE users SET ${dataStringify} WHERE id = $1 RETURNING *;`, [userId])).rows[0]
+    const dataStringify = objStringify(data);
+    const updatedAt = currentDateFormated()
+    return (
+      await query(
+        `UPDATE users SET ${dataStringify}, updatedat = $2  WHERE id = $1 RETURNING *;`,
+        [userId, updatedAt]
+      )
+    ).rows[0];
   } catch (error) {
     throw new ExpressReviewsError(
       "No se pudo editar usuario",
+      403,
+      "data error",
+      error
+    );
+  }
+}
+
+export async function deleteUser(userId: number): Promise<User> {
+  try {
+    return (
+      await query("DELETE FROM users WHERE id = $1 RETURNING *;", [userId])
+    ).rows[0];
+  } catch (error) {
+    throw new ExpressReviewsError(
+      "No se pudo eliminar el usuario",
       403,
       "data error",
       error
