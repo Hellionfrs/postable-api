@@ -38,11 +38,11 @@ export const editPostsController = async (
     console.log(username, userId, req)
     const postId = Number(req.params["postId"])
     const postData = PostSchemaContentEdit.parse(req.body) as PostContent
-    const updatedPost = await editPost(postId, userId, postData)
+    const {userid, likescount, ...updatedPost} = await editPost(postId, userId, postData)
     res.status(201).json({
       ok:true,
       message: "Post editado exitosamente",
-      data: {...updatedPost, username: username }
+      data: {...updatedPost, username, likescount }
     })
   } catch (error) {
     next(error)

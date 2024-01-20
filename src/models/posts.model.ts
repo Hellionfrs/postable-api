@@ -34,4 +34,4 @@ export type PostContent = z.infer<typeof PostSchemaContent>
 export type PostWithDates = z.infer<typeof PostSchemaWithDates>
 export type PostWithDatesAndUserId = PostWithDates & {userid: number}
 // typar con Post la respuesta de la DB
-export type Post = z.infer<typeof PostSchemaWithDates> & withId
+export type Post = z.infer<typeof PostSchemaWithDates> & withId & {userid: number, likescount: number}
