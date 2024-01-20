@@ -72,7 +72,7 @@ export const UserSchemaEdit = UserSchemaRegister.pick({
   message: 'Intenta con email, firstname o lastname',
 })
 
-type withId = {
+export type withId = {
   id: number;
 }
 export type UserRegister = z.infer<typeof UserSchemaRegister>

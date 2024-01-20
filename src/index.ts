@@ -3,11 +3,13 @@ import { authRouter } from "./routers/auth.router";
 import errorHandler from "./middlewares/error.middleware";
 import 'dotenv/config' 
 import { userProfile } from "./routers/userProfile.router";
+import { postsRouter } from "./routers/posts.router";
 
 const app = express();
 const port = 5500;
 app.use(express.json());
 app.use(authRouter)
+app.use("/posts", postsRouter)
 app.use(userProfile)
 app.use(errorHandler)
 app.listen(port, () => console.log(`Escuchando al puerto ${port}`));
