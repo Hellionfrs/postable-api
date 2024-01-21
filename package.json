@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node build/index.js",
     "test": "NODE_ENV=test vitest",
+    "db:testreset": "NODE_ENV=test db:reset",
     "db:migrate": "ts-node src/db/scripts/dbMigrate.ts",
     "db:create": "ts-node src/db/scripts/dbCreate.ts",
     "db:drop": "ts-node src/db/scripts/dbDrop.ts",

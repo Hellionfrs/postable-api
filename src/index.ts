@@ -9,7 +9,7 @@ const app = express();
 const port = 5500;
 app.use(express.json());
 app.use(authRouter)
-app.use(postsRouter)
 app.use(userProfile)
+app.use(postsRouter)
 app.use(errorHandler)
 app.listen(port, () => console.log(`Escuchando al puerto ${port}`));

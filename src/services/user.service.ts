@@ -41,6 +41,7 @@ export async function getUserByNameAndEmail(username: string, email:string):Prom
 
 export async function getUserById(userId: number):Promise<User> {
   try {
+    console.log(userId)
     const user = await userDB.getUserById(userId);
     if (!user) {
       throw new ExpressReviewsError("usuario no existe", 403, "service error")

@@ -7,8 +7,10 @@ export const getUserProfileController = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log("trying", "getUserProfileController");
   try {
     const id = Number(req.userId);
+    console.log(id);
     const { password, ...user } = await getUserById(id);
     res.status(200).json({
       ok: true,
@@ -24,14 +26,15 @@ export const editUserController = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log("trying", "editUserController");
   try {
     const id = Number(req.userId);
-    const data = UserSchemaEdit.parse(req.body)
-    const {password, ...updatedUser} = await updateUser(id, data)
+    const data = UserSchemaEdit.parse(req.body);
+    const { password, ...updatedUser } = await updateUser(id, data);
     res.status(200).json({
       ok: true,
       data: updatedUser,
-  });
+    });
   } catch (error) {
     next(error);
   }
@@ -44,7 +47,7 @@ export const deleteUserController = async (
 ) => {
   try {
     const id = Number(req.userId);
-    const {password, ...deletedUser} = await deleteUser(id)
+    const { password, ...deletedUser } = await deleteUser(id);
     res.status(200).json({
       ok: true,
       data: deletedUser,
@@ -52,4 +55,4 @@ export const deleteUserController = async (
   } catch (error) {
     next(error);
   }
-}; 
+};
