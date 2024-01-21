@@ -22,6 +22,10 @@ npm install
 1. Antes de comenzar con las migraciones es necesario que tengas Postgresql y un usuario con permisos especiales
 1. Crea una db con el usuario con permisos que nos servira de admin
 1. Crea un archivo .env en la raiz del proyecto y completa segun tu usario de Postgresql, recuerda que el PGDATABASE y PGADMINDATABASE deben ser distintos
+1. Puedes resetear todo la base de datos y crearla denuevo (recomiendo hacer esto al inicio luego del npm install)
+ ```ruby
+npm run db:reset
+``` 
 ```ruby
 PGHOST=localhost
 PGDATABASE=database
@@ -30,15 +34,15 @@ PGUSER=pg_user
 PGPASSWORD=pg_password
 PGADMINDATABASE=admin_database
 ```
-4.  Crea la base de datos que usaremos!
+1.  Crea la base de datos que usaremos!
 ```ruby 
 npm run db:create  
 ```
-5. Crea las tablas!
+1. Crea las tablas!
 ```ruby
 npm run db:migrate up
 ```
-6. Si quieres seguir agregar migraciones para que todos nos pongamos al dia 
+1. Si quieres seguir agregar migraciones para que todos nos pongamos al dia 
 ```ruby
 npm run db:migrate create -- --name create-users.ts 
 ```
