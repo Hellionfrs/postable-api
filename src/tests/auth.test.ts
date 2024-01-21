@@ -1,12 +1,11 @@
-
-import  bcrypt  from 'bcrypt';
+import bcrypt from "bcrypt";
 import { describe, beforeEach, it, expect } from "vitest";
 import request from "supertest";
 import { app } from "../app";
 import { truncateTable } from "../db/utils";
 import * as db from "../db";
 import { currentDateFormated } from "../utils/currentDate";
-import { costFactor } from '../utils/const.utils';
+import { costFactor } from "../utils/const.utils";
 
 describe("Auth API", () => {
   beforeEach(async () => {
@@ -26,7 +25,6 @@ describe("Auth API", () => {
     let query = `INSERT INTO users (username, password, email, firstName,lastName, role, createdat, updatedat ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
 
     const fistUser = (await db.query(query, Object.values(testUser))).rows[0];
-    console.log(fistUser);
   });
 
   it("should sign up a new user", async () => {
@@ -58,6 +56,5 @@ describe("Auth API", () => {
     expect(response.body.ok).toBe(true);
     expect(response.body.message).toBe("Login exitoso");
     expect(response.body.data).toHaveProperty("token");
-
   });
 });
