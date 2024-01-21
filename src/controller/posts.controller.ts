@@ -183,6 +183,33 @@ export const getPostByNameController = async (
   next: NextFunction
 ) => {
   try {
+    const username = req.params["username"];
+    const { order, page, limit, orderBy } = QuerySchema.parse(
+      req.query
+    );
+    const filters: PostFilterId  = {};
+    if (username) {
+      const user = await getUserByName(username);
+      filters["userid"] = user.id
+    }
+    const posts = await getPosts(filters, order, page, limit, orderBy);
+
+    //pagination
+    const totalItems = await getPostsCount(filters);
+    const totalPages = Math.ceil(totalItems / limit);
+
+    res.json({
+      ok: true,
+      data: posts,
+      pagination: {
+        page,
+        pageSize: limit,
+        totalItems,
+        totalPages,
+        nextPage: page < totalPages ? page + 1 : null,
+        previousPage: page > 1 ? page - 1 : null,
+      },
+    });
   } catch (error) {
     next(error);
   }

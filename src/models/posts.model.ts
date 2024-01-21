@@ -47,8 +47,8 @@ export const QuerySchema = z.object({
     message: 'El límite debe ser un número entre 10 y 5.',
   }).transform(parsePositiveInt).default("10"),
   username: z.string().optional(),
-  orderBy: z.enum(["createdat", "likescount"]).optional(),
-  order: z.enum(["asc", "desc"]).optional(),
+  orderBy: z.enum(["createdat", "likescount"]).optional().default("createdat"),
+  order: z.enum(["asc", "desc"]).optional().default("asc"),
 }).transform((data) => {
   // Crear un nuevo objeto solo con los campos deseados
   const filteredData = {

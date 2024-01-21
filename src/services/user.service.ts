@@ -20,7 +20,7 @@ export async function getUserByName(username: string):Promise<User> {
   try {
     const user = await userDB.getUserByName(username);
     if (!user) {
-      throw new ExpressReviewsError("usuario no existe", 403, "service error")
+      throw new ExpressReviewsError("usuario no existe", 404, "service error")
     } 
     return user
   } catch (error) {
