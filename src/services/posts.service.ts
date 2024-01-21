@@ -1,7 +1,9 @@
 import {
   Post,
   PostContent,
+  PostFilterId,
   PostWithDatesAndUserId,
+  QueryParams,
 } from "../models/posts.model";
 import * as postsDB from "../data/posts.data";
 import ExpressReviewsError from "../utils/postableError.utils";
@@ -43,14 +45,14 @@ export async function editPost(
     }
     return await postsDB.editPost(postId, userId, data);
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
 export async function editPostLikes(
   postId: number,
   userId: number,
-  newCantLikes: number,
+  newCantLikes: number
 ): Promise<Post> {
   try {
     const post = await postsDB.getPostById(postId);
@@ -64,6 +66,22 @@ export async function editPostLikes(
     }
     return await postsDB.editPostLikes(postId, userId, newCantLikes);
   } catch (error) {
-    throw error
+    throw error;
   }
 }
+
+export async function getPosts(filters: PostFilterId, order: QueryParams['order'], page: QueryParams['page'], limit: QueryParams['limit'], orderBy: QueryParams['orderBy']) {
+  try {
+    return postsDB.getPostsFromDB(filters, order, page, limit, orderBy)
+  } catch (error) {
+    throw error;
+  }
+};
+
+export async function getPostsCount(filters: PostFilterId) {
+  try {
+    return postsDB.getPostsCountFromDB(filters)
+  } catch (error) {
+    throw error;
+  }
+};

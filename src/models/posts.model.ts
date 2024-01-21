@@ -35,3 +35,41 @@ export type PostWithDates = z.infer<typeof PostSchemaWithDates>
 export type PostWithDatesAndUserId = PostWithDates & {userid: number}
 // typar con Post la respuesta de la DB
 export type Post = z.infer<typeof PostSchemaWithDates> & withId & {userid: number, likescount: number}
+const parsePositiveInt = (value: number | string): number => {
+  const parsedValue = typeof value === "string" ? parseInt(value, 10) : value;
+  return parsedValue > 0 ? parsedValue : 1;
+};
+export const QuerySchema = z.object({
+  page: z.string().transform(parsePositiveInt).refine((value) => value >= 0, {
+    message: 'La página debe ser un número entero positivo o cero.',
+  }).transform(parsePositiveInt).default("1"),
+  limit: z.string().transform(parsePositiveInt).refine((value) => value >= 5, {
+    message: 'El límite debe ser un número entre 10 y 5.',
+  }).transform(parsePositiveInt).default("10"),
+  username: z.string().optional(),
+  orderBy: z.enum(["createdat", "likescount"]).optional(),
+  order: z.enum(["asc", "desc"]).optional(),
+}).transform((data) => {
+  // Crear un nuevo objeto solo con los campos deseados
+  const filteredData = {
+    page: data.page,
+    limit: data.limit,
+    username: data.username,
+    orderBy: data.orderBy,
+    order: data.order,
+  };
+
+  return filteredData;
+});
+
+export type QueryParams = z.infer<typeof QuerySchema>
+export type PostFilter = {
+  username?: string;
+};
+
+export type PostFilterId = {
+  userid?: number;
+};
+
+
+
